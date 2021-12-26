@@ -17,8 +17,14 @@ public class panel extends JPanel{
 						
 		content.setLayout(new BorderLayout());
 				
-		content.add(new map());
-						
+		map mapa=new map();
+		counter count=new counter(mapa);
+		
+		mapa.setCounter(count);
+		
+		content.add(mapa, BorderLayout.CENTER);
+		content.add(count, BorderLayout.NORTH);				
+		
 		add(content);
 				
 	}

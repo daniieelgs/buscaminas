@@ -16,6 +16,8 @@ public class map extends JPanel{
 	
 	private box[][] boxes;
 	
+	private counter count;
+	
 	public map(int dimension) {
 	
 		setLayout(new GridLayout(dimension, dimension));
@@ -44,6 +46,10 @@ public class map extends JPanel{
 		
 		this(EASY_MODE);
 		
+	}
+	
+	public void setCounter(counter count) {
+		this.count=count;
 	}
 		
 	private class box extends JPanel{ //CASILLAS
