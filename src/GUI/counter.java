@@ -20,7 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class counter extends JPanel{
+public class counter extends JPanel implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,6 +28,7 @@ public class counter extends JPanel{
 	private JButton reset;
 	private ImageIcon happy, sad;
 	private int nFlags, nTimer;
+	private Thread threadTimer;
 	
 	public counter(map mapa) {
 		
@@ -174,14 +175,44 @@ public class counter extends JPanel{
 	
 	public void startTimer() {
 		
-		//TODO
+		threadTimer=new Thread(this);
+		
+		threadTimer.start();
 		
 	}
 	
 	public void resetTimer() {
 		
-		//TODO
+		nTimer=0;
+		timer.setText("000");
 		
+		updateUI();
+		
+	}
+	
+	public void stopTimer() {
+		
+		threadTimer.interrupt();
+		
+	}
+	
+	public void run() {
+		
+		while(!Thread.currentThread().isInterrupted()) {
+			
+			try {
+				Thread.sleep(1000);
+				
+				nTimer++;
+				timer.setText(formatTo(nTimer));
+			} catch (InterruptedException e) {
+				//e.printStackTrace();
+				Thread.currentThread().interrupt();
+			}
+
+			
+		}
+				
 	}
 	
 }

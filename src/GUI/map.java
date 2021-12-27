@@ -101,6 +101,7 @@ public class map extends JPanel{
 		this.count=count;
 		
 		count.setFlags(nMines);
+		count.startTimer();
 	}
 		
 	private class box extends JPanel{ //CASILLAS
@@ -213,6 +214,7 @@ public class map extends JPanel{
 						if(mine) {							
 							setBackground(Color.RED);
 							color=Color.RED;
+							count.stopTimer();
 							openAll();
 						}
 					}
