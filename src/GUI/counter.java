@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class counter extends JPanel implements Runnable{
@@ -26,7 +27,7 @@ public class counter extends JPanel implements Runnable{
 
 	private JLabel flags, timer;
 	private JButton reset;
-	private ImageIcon happy, sad, died;
+	private ImageIcon happy, sad, died, win;
 	private int nFlags, nTimer;
 	private Thread threadTimer;
 	private boolean die;
@@ -62,6 +63,9 @@ public class counter extends JPanel implements Runnable{
 
 			icon=ImageIO.read(counter.class.getResource("Images/died.png"));
 			died=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			
+			icon=ImageIO.read(counter.class.getResource("Images/win.png"));
+			win=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -115,6 +119,8 @@ public class counter extends JPanel implements Runnable{
 				
 				mapa.reset();
 				
+				startTimer();
+				
 			}
 			
 		});
@@ -148,6 +154,15 @@ public class counter extends JPanel implements Runnable{
 		
 		die=true;
 		reset.setIcon(died);
+		
+	}
+	
+	public void win() {
+		
+		reset.setIcon(win);
+		stopTimer();
+		
+		JOptionPane.showMessageDialog(null, "VICTORIA", "Busca Minas", JOptionPane.INFORMATION_MESSAGE, win);
 		
 	}
 	

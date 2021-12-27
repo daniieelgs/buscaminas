@@ -29,7 +29,7 @@ public class map extends JPanel{
 	private box[][] boxes;
 	
 	private counter count;
-	private int dimension, nMines;
+	private int dimension, nMines, maxBoxesOpened, numBoxesOpened;
 	
 	public map(int dimension, int nMines) {
 	
@@ -37,6 +37,8 @@ public class map extends JPanel{
 				
 		this.dimension=dimension;
 		this.nMines=nMines;
+		
+		maxBoxesOpened=dimension*dimension-nMines;
 		
 		boxes=new box[dimension][dimension];
 						
@@ -86,7 +88,7 @@ public class map extends JPanel{
 			}while(boxes[y][x].isMine());
 			
 			boxes[y][x].setMine(true);
-			
+						
 			for(int j=x-1; j<x+2; j++) {
 				
 				if((y-1)>=0 && j>=0 && j<dimension && boxes[y-1][j].getNumber()!=-1) boxes[y-1][j].setNumber(boxes[y-1][j].getNumber()+1);
@@ -229,6 +231,11 @@ public class map extends JPanel{
 					}else {
 						open();
 						
+						if(numBoxesOpened==maxBoxesOpened) {
+							count.win();
+							openAll();
+						}
+						
 						if(mine) {							
 							setBackground(Color.RED);
 							color=Color.RED;
@@ -264,6 +271,8 @@ public class map extends JPanel{
 			if(icon==FLAG) count.setFlags(count.getFlags()+1);
 			
 			icon=OPENED;
+			
+			numBoxesOpened++;
 			
 			if(mine) {
 				
