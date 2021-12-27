@@ -30,7 +30,7 @@ public class counter extends JPanel implements Runnable{
 	private ImageIcon happy, sad, died, win;
 	private int nFlags, nTimer;
 	private Thread threadTimer;
-	private boolean die;
+	private boolean die, winner;
 	
 	public counter(map mapa) {
 		
@@ -94,14 +94,14 @@ public class counter extends JPanel implements Runnable{
 			
 			public void mouseEntered(MouseEvent e) {
 				
-				reset.setIcon(sad);
+				if(!winner) reset.setIcon(sad);
 				
 			}
 			
 			public void mouseExited(MouseEvent e) {
 				
 				if(die) reset.setIcon(died);
-				else reset.setIcon(happy);
+				else if(!winner) reset.setIcon(happy);
 				
 			}
 			
@@ -113,6 +113,7 @@ public class counter extends JPanel implements Runnable{
 
 				resetTimer();
 				die=false;
+				winner=false;
 				
 				nFlags=0;
 				flags.setText("");
@@ -160,9 +161,83 @@ public class counter extends JPanel implements Runnable{
 	public void win() {
 		
 		reset.setIcon(win);
+		winner=true;
+				
 		stopTimer();
 		
 		JOptionPane.showMessageDialog(null, "VICTORIA", "Busca Minas", JOptionPane.INFORMATION_MESSAGE, win);
+	
+		animation();
+		
+	}
+	
+	private void animation() {
+		
+		Thread threadAnimation=new Thread(new Runnable(){
+
+			public void run() {
+
+				int DELAY=50;
+				
+				while(nTimer>0) {
+					
+					try {
+						Thread.sleep(DELAY);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					
+					nTimer--;
+					
+					timer.setText(formatTo(nTimer));
+					
+					updateUI();
+					
+				}
+				
+				flags.setText("000");
+				
+				DELAY=800;
+				
+				char[] c=flags.getText().toCharArray();
+				
+				char[] c2="WIN".toCharArray();
+				
+				for(int i=0; i<3; i++) {
+					
+					try {
+						Thread.sleep(DELAY);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					c[i]=c2[i];
+					
+					flags.setText(String.valueOf(c));
+					
+				}
+				
+				c=timer.getText().toCharArray();
+				
+				for(int i=0; i<3; i++) {
+					
+					try {
+						Thread.sleep(DELAY);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					c[i]=c2[i];
+					
+					timer.setText(String.valueOf(c));
+					
+				}
+				
+			}
+		});
+		
+		threadAnimation.start();
 		
 	}
 	

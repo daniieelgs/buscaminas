@@ -88,7 +88,7 @@ public class map extends JPanel{
 			}while(boxes[y][x].isMine());
 			
 			boxes[y][x].setMine(true);
-						
+								
 			for(int j=x-1; j<x+2; j++) {
 				
 				if((y-1)>=0 && j>=0 && j<dimension && boxes[y-1][j].getNumber()!=-1) boxes[y-1][j].setNumber(boxes[y-1][j].getNumber()+1);
