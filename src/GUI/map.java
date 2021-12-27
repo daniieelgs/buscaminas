@@ -44,7 +44,7 @@ public class map extends JPanel{
 			
 			for(int x=0; x<dimension; x++) {
 				
-				box b=new box();
+				box b=new box(x, y);
 				
 				b.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 								
@@ -116,9 +116,14 @@ public class map extends JPanel{
 		
 		private Color color;
 		
-		public box() {
+		private int x, y;
+		
+		public box(int x, int y) {
 			
 			setLayout(new BorderLayout());
+			
+			this.x=x;
+			this.y=y;
 			
 			iconLabel=new JLabel("", SwingConstants.CENTER);
 			
@@ -140,7 +145,7 @@ public class map extends JPanel{
 				
 				public void mouseEntered(MouseEvent e) {
 					
-					if(number!=0) setBackground(color.darker());
+					if(number!=0 || icon!=OPENED) setBackground(color.darker());
 					
 				}
 				
@@ -234,6 +239,10 @@ public class map extends JPanel{
 		public void open() {
 
 			iconLabel.setIcon(null);
+
+			if(icon==FLAG) count.setFlags(count.getFlags()+1);
+			
+			icon=OPENED;
 			
 			if(mine) {
 				
@@ -257,6 +266,19 @@ public class map extends JPanel{
 					color=Color.GRAY.darker();
 					setBackground(color);
 					iconLabel.setForeground(color);
+					
+					for(int j=x-1; j<x+2; j++) {
+						
+						if((y-1)>=0 && j>=0 && j<dimension && boxes[y-1][j].getNumber()!=-1 && boxes[y-1][j].getIcon()!=OPENED) boxes[y-1][j].open();
+						
+						if((y+1)<dimension && j>=0 && j<dimension && boxes[y+1][j].getNumber()!=-1 && boxes[y+1][j].getIcon()!=OPENED) boxes[y+1][j].open();
+						
+					}
+					
+					if((x-1)>=0 && boxes[y][x-1].getNumber()!=-1 && boxes[y][x-1].getIcon()!=OPENED) boxes[y][x-1].open();
+					
+					if((x+1)<dimension && boxes[y][x+1].getNumber()!=-1 && boxes[y][x+1].getIcon()!=OPENED) boxes[y][x+1].open();
+					
 					break;
 				
 				case 1:
@@ -282,10 +304,6 @@ public class map extends JPanel{
 				}
 					
 			}
-
-			if(icon==FLAG) count.setFlags(count.getFlags()+1);
-			
-			icon=OPENED;
 			
 		}
 		
@@ -307,6 +325,10 @@ public class map extends JPanel{
 		
 		public int getNumber() {
 			return number;
+		}
+		
+		public int getIcon() {
+			return icon;
 		}
 				
 	}
