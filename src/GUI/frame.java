@@ -21,6 +21,8 @@ public class frame extends JFrame{
 		
 		setBounds(width*3/8, height/4, width/4, height/2);
 		
+		setResizable(false);
+		
 		content=new panel(width/4, height/2);
 		
 		add(content, BorderLayout.CENTER);

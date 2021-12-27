@@ -10,6 +10,7 @@ public class panel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel content;
+	private map mapa;
 	
 	public panel(int width, int height) {
 				
@@ -17,15 +18,16 @@ public class panel extends JPanel{
 						
 		content.setLayout(new BorderLayout());
 				
-		map mapa=new map();
+		mapa=new map();
 		counter count=new counter(mapa);
 		
 		mapa.setCounter(count);
 		
 		content.add(mapa, BorderLayout.CENTER);
 		content.add(count, BorderLayout.NORTH);				
-		
+				
 		add(content);
+		
 				
 	}
 	
@@ -34,7 +36,7 @@ public class panel extends JPanel{
 		int sizePanel=((width > height ? height : width));
 		
 		content.setPreferredSize(new Dimension(sizePanel, sizePanel));
-		
+				
 		updateUI();
 		
 	}
