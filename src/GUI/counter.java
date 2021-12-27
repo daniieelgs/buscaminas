@@ -119,9 +119,7 @@ public class counter extends JPanel implements Runnable{
 				flags.setText("");
 				
 				mapa.reset();
-				
-				startTimer();
-				
+								
 			}
 			
 		});
@@ -162,9 +160,7 @@ public class counter extends JPanel implements Runnable{
 		
 		reset.setIcon(win);
 		winner=true;
-				
-		stopTimer();
-		
+						
 		JOptionPane.showMessageDialog(null, "VICTORIA", "Busca Minas", JOptionPane.INFORMATION_MESSAGE, win);
 	
 		animation();

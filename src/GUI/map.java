@@ -89,6 +89,8 @@ public class map extends JPanel{
 			
 			boxes[y][x].setMine(true);
 								
+			System.out.println(x + " - " + y);
+			
 			for(int j=x-1; j<x+2; j++) {
 				
 				if((y-1)>=0 && j>=0 && j<dimension && boxes[y-1][j].getNumber()!=-1) boxes[y-1][j].setNumber(boxes[y-1][j].getNumber()+1);
@@ -120,7 +122,12 @@ public class map extends JPanel{
 		
 		generateMines();
 		
-		if(count!=null) count.setFlags(nMines);
+		if(count!=null) {
+			
+			count.setFlags(nMines);
+			count.startTimer();
+
+		}
 		
 	}
 		
@@ -188,7 +195,7 @@ public class map extends JPanel{
 							
 							case NOT_ICON:
 								
-								if(count.getFlags()>0) {
+								if(count!=null && count.getFlags()>0) {
 								
 									bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
 									
@@ -210,7 +217,7 @@ public class map extends JPanel{
 								
 								icon=DOUBT;
 								
-								count.setFlags(count.getFlags()+1);
+								if(count!=null) count.setFlags(count.getFlags()+1);
 								
 								break;
 								
@@ -232,15 +239,24 @@ public class map extends JPanel{
 						open();
 						
 						if(numBoxesOpened==maxBoxesOpened) {
-							count.win();
+						
+							if(count!=null) {
+								count.stopTimer();
+								count.win();
+							}
+
 							openAll();
 						}
 						
 						if(mine) {							
 							setBackground(Color.RED);
 							color=Color.RED;
-							count.stopTimer();
-							count.die();
+							
+							if(count!=null) {
+								count.stopTimer();
+								count.die();
+							}
+
 							openAll();
 						}
 					}
@@ -268,7 +284,7 @@ public class map extends JPanel{
 
 			iconLabel.setIcon(null);
 
-			if(icon==FLAG) count.setFlags(count.getFlags()+1);
+			if(icon==FLAG && count!=null) count.setFlags(count.getFlags()+1);
 			
 			icon=OPENED;
 			
