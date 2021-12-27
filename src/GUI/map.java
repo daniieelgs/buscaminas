@@ -146,6 +146,8 @@ public class map extends JPanel{
 		
 		private int x, y;
 		
+		private int typeButtonCount;
+		
 		public box(int x, int y) {
 			
 			setLayout(new BorderLayout());
@@ -177,98 +179,119 @@ public class map extends JPanel{
 					
 				}
 				
+				public void mousePressed(MouseEvent e) {
+					
+					if(count!=null) {
+						
+						typeButtonCount=count.getButton();
+						count.setButton(counter.SORPRES);
+						
+					}
+					
+				}
+				
+				public void mouseReleased(MouseEvent e) {
+					
+					if(count!=null) count.setButton(typeButtonCount);
+					
+					if(e.getButton()==MouseEvent.BUTTON3) rightClick();						
+					else leftClick();
+											
+				}
+				
 				public void mouseExited(MouseEvent e) {
 					
 					setBackground(color);
 					
 				}
-				
-				public void mouseClicked(MouseEvent e) {
-					
-					if(e.getButton()==MouseEvent.BUTTON3) { //CLICK DERECHO
-						
-						BufferedImage bufferIcon=null;
-						
-						try {
-						
-							switch(icon) {
-							
-							case NOT_ICON:
 								
-								if(count!=null && count.getFlags()>0) {
-								
-									bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
-									
-									iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
-									
-									icon=FLAG;
-																	
-									count.setFlags(count.getFlags()-1);
-									
-								}
-								
-								break;
-								
-							case FLAG:
-								
-								bufferIcon=ImageIO.read(map.class.getResource("Images/doubt.png"));
-								
-								iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
-								
-								icon=DOUBT;
-								
-								if(count!=null) count.setFlags(count.getFlags()+1);
-								
-								break;
-								
-							case DOUBT:
-								
-								iconLabel.setIcon(null);
-								
-								icon=NOT_ICON;
-								
-								break;
-							
-							}
-							
-						}catch(IOException ex) {
-							ex.printStackTrace();
-						}
-												
-					}else {
-						
-						if(icon!=OPENED) open();
-						
-						if(numBoxesOpened==maxBoxesOpened) {
-						
-							if(count!=null) {
-								count.stopTimer();
-								count.win();
-							}
-
-							openAll();
-						}
-						
-						if(mine) {							
-							setBackground(Color.RED);
-							color=Color.RED;
-							
-							if(count!=null) {
-								count.stopTimer();
-								count.die();
-							}
-
-							openAll();
-						}
-					}
-					
-				}
-				
 			});
 			
 		}
 		
-		public void openAll() {
+		private void rightClick() { //CLICK DERECHO
+			
+			BufferedImage bufferIcon=null;
+			
+			try {
+			
+				switch(icon) {
+				
+				case NOT_ICON:
+					
+					if(count!=null && count.getFlags()>0) {
+					
+						bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
+						
+						iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+						
+						icon=FLAG;
+														
+						count.setFlags(count.getFlags()-1);
+						
+					}
+					
+					break;
+					
+				case FLAG:
+					
+					bufferIcon=ImageIO.read(map.class.getResource("Images/doubt.png"));
+					
+					iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+					
+					icon=DOUBT;
+					
+					if(count!=null) count.setFlags(count.getFlags()+1);
+					
+					break;
+					
+				case DOUBT:
+					
+					iconLabel.setIcon(null);
+					
+					icon=NOT_ICON;
+					
+					break;
+				
+				}
+				
+			}catch(IOException ex) {
+				ex.printStackTrace();
+			}
+									
+		}
+		
+		private void leftClick() {
+				
+			if(icon!=OPENED) open();
+			
+			if(numBoxesOpened==maxBoxesOpened) {
+			
+				if(count!=null) {
+					count.stopTimer();
+					count.setButton(counter.WIN);
+					count.win();
+				}
+
+				openAll();
+			}
+			
+			if(mine) {							
+				setBackground(Color.RED);
+				color=Color.RED;
+				
+				if(count!=null) {
+					count.stopTimer();
+					count.setButton(counter.DIE);
+				}
+
+				openAll();
+			}
+		
+			
+		}
+		
+		private void openAll() {
 			
 			for(int y=0; y<dimension; y++) {
 				

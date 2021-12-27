@@ -27,10 +27,11 @@ public class counter extends JPanel implements Runnable{
 
 	private JLabel flags, timer;
 	private JButton reset;
-	private ImageIcon happy, sad, died, win;
+	private ImageIcon happy, sad, died, win, sorpres;
 	private int nFlags, nTimer;
 	private Thread threadTimer, threadAnimation;
-	private boolean die, winner;
+	final static int HAPPY=0, SAD=1, DIE=3, WIN=4, SORPRES=5;
+	private int type;
 	
 	public counter(map mapa) {
 		
@@ -67,20 +68,24 @@ public class counter extends JPanel implements Runnable{
 			icon=ImageIO.read(counter.class.getResource("Images/win.png"));
 			win=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 			
+			icon=ImageIO.read(counter.class.getResource("Images/sorpres.png"));
+			sorpres=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		reset=new JButton(happy);
+		reset=new JButton();
 		
 		reset.setOpaque(false);
 		reset.setFocusPainted(false);
 		reset.setBorderPainted(false); 
 		reset.setContentAreaFilled(false); 
-		reset.setIcon(happy);
 		
 		reset.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		reset.setCursor(new Cursor(Cursor.HAND_CURSOR));		
+		
+		setButton(HAPPY);
 		
 		JPanel resetPanel=new JPanel();
 		
@@ -94,14 +99,14 @@ public class counter extends JPanel implements Runnable{
 			
 			public void mouseEntered(MouseEvent e) {
 				
-				if(!winner) reset.setIcon(sad);
+				if(type!=WIN) setButton(SAD);
 				
 			}
 			
 			public void mouseExited(MouseEvent e) {
 				
-				if(die) reset.setIcon(died);
-				else if(!winner) reset.setIcon(happy);
+				if(type==DIE) setButton(DIE);
+				else if(type!=WIN) setButton(HAPPY);
 				
 			}
 			
@@ -113,8 +118,8 @@ public class counter extends JPanel implements Runnable{
 
 				if(threadAnimation!=null) threadAnimation.interrupt();
 				resetTimer();
-				die=false;
-				winner=false;
+				
+				setButton(HAPPY);
 				
 				nFlags=0;
 				flags.setText("");
@@ -124,6 +129,24 @@ public class counter extends JPanel implements Runnable{
 			}
 			
 		});
+		
+	}
+	
+	public void setButton(int t) {
+		
+		type=t;
+		
+		if(type==HAPPY) reset.setIcon(happy);
+		else if(type==SAD) reset.setIcon(sad);
+		else if(type==WIN) reset.setIcon(win);
+		else if(type==DIE) reset.setIcon(died);
+		else if(type==SORPRES) reset.setIcon(sorpres);
+		
+	}
+	
+	public int getButton() {
+		
+		return type;
 		
 	}
 	
@@ -150,25 +173,9 @@ public class counter extends JPanel implements Runnable{
 		
 	}
 	
-	public void die() {
-		
-		die=true;
-		reset.setIcon(died);
-		
-	}
-	
 	public void win() {
 		
-		reset.setIcon(win);
-		winner=true;
-						
 		JOptionPane.showMessageDialog(null, "VICTORIA", "Busca Minas", JOptionPane.INFORMATION_MESSAGE, win);
-	
-		animation();
-		
-	}
-	
-	private void animation() {
 		
 		threadAnimation=new Thread(new Runnable(){
 
@@ -310,7 +317,6 @@ public class counter extends JPanel implements Runnable{
 				nTimer++;
 				timer.setText(formatTo(nTimer));
 			} catch (InterruptedException e) {
-				//e.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
 
