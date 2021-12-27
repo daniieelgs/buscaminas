@@ -89,7 +89,7 @@ public class map extends JPanel{
 			
 			boxes[y][x].setMine(true);
 								
-			System.out.println(x + " - " + y);
+			//System.out.println(x + " - " + y);
 			
 			for(int j=x-1; j<x+2; j++) {
 				
@@ -236,7 +236,8 @@ public class map extends JPanel{
 						}
 												
 					}else {
-						open();
+						
+						if(icon!=OPENED) open();
 						
 						if(numBoxesOpened==maxBoxesOpened) {
 						

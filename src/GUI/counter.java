@@ -29,7 +29,7 @@ public class counter extends JPanel implements Runnable{
 	private JButton reset;
 	private ImageIcon happy, sad, died, win;
 	private int nFlags, nTimer;
-	private Thread threadTimer;
+	private Thread threadTimer, threadAnimation;
 	private boolean die, winner;
 	
 	public counter(map mapa) {
@@ -111,6 +111,7 @@ public class counter extends JPanel implements Runnable{
 
 			public void actionPerformed(ActionEvent e) {
 
+				threadAnimation.interrupt();
 				resetTimer();
 				die=false;
 				winner=false;
@@ -169,7 +170,7 @@ public class counter extends JPanel implements Runnable{
 	
 	private void animation() {
 		
-		Thread threadAnimation=new Thread(new Runnable(){
+		threadAnimation=new Thread(new Runnable(){
 
 			public void run() {
 
@@ -180,7 +181,7 @@ public class counter extends JPanel implements Runnable{
 					try {
 						Thread.sleep(DELAY);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Thread.currentThread().interrupt();
 					}
 					
 					
@@ -205,7 +206,7 @@ public class counter extends JPanel implements Runnable{
 					try {
 						Thread.sleep(DELAY);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Thread.currentThread().interrupt();
 					}
 					
 					c[i]=c2[i];
@@ -221,7 +222,7 @@ public class counter extends JPanel implements Runnable{
 					try {
 						Thread.sleep(DELAY);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Thread.currentThread().interrupt();
 					}
 					
 					c[i]=c2[i];
