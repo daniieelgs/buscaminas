@@ -26,9 +26,10 @@ public class counter extends JPanel implements Runnable{
 
 	private JLabel flags, timer;
 	private JButton reset;
-	private ImageIcon happy, sad;
+	private ImageIcon happy, sad, died;
 	private int nFlags, nTimer;
 	private Thread threadTimer;
+	private boolean die;
 	
 	public counter(map mapa) {
 		
@@ -59,6 +60,9 @@ public class counter extends JPanel implements Runnable{
 			icon=ImageIO.read(counter.class.getResource("Images/sad.png"));
 			sad=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 
+			icon=ImageIO.read(counter.class.getResource("Images/died.png"));
+			died=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +96,8 @@ public class counter extends JPanel implements Runnable{
 			
 			public void mouseExited(MouseEvent e) {
 				
-				reset.setIcon(happy);
+				if(die) reset.setIcon(died);
+				else reset.setIcon(happy);
 				
 			}
 			
@@ -103,7 +108,12 @@ public class counter extends JPanel implements Runnable{
 			public void actionPerformed(ActionEvent e) {
 
 				resetTimer();
-				//TODO
+				die=false;
+				
+				nFlags=0;
+				flags.setText("");
+				
+				mapa.reset();
 				
 			}
 			
@@ -131,6 +141,13 @@ public class counter extends JPanel implements Runnable{
 		}
 		
 		return s;
+		
+	}
+	
+	public void die() {
+		
+		die=true;
+		reset.setIcon(died);
 		
 	}
 	

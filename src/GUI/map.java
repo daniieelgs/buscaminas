@@ -40,6 +40,20 @@ public class map extends JPanel{
 		
 		boxes=new box[dimension][dimension];
 						
+		createBoxes();
+		
+		generateMines();
+				
+	}
+	
+	public map() {
+		
+		this(EASY_MODE[0], EASY_MODE[1]);
+		
+	}
+	
+	public void createBoxes() {
+		
 		for(int y=0; y<dimension; y++) {
 			
 			for(int x=0; x<dimension; x++) {
@@ -55,14 +69,6 @@ public class map extends JPanel{
 			}
 			
 		}
-		
-		generateMines();
-				
-	}
-	
-	public map() {
-		
-		this(EASY_MODE[0], EASY_MODE[1]);
 		
 	}
 	
@@ -102,6 +108,18 @@ public class map extends JPanel{
 		
 		count.setFlags(nMines);
 		count.startTimer();
+	}
+	
+	public void reset() {
+		
+		removeAll();
+		
+		createBoxes();
+		
+		generateMines();
+		
+		if(count!=null) count.setFlags(nMines);
+		
 	}
 		
 	private class box extends JPanel{ //CASILLAS
@@ -215,6 +233,7 @@ public class map extends JPanel{
 							setBackground(Color.RED);
 							color=Color.RED;
 							count.stopTimer();
+							count.die();
 							openAll();
 						}
 					}
