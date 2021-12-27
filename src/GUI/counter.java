@@ -24,9 +24,10 @@ public class counter extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	private JLabel nFlags, timer;
+	private JLabel flags, timer;
 	private JButton reset;
 	private ImageIcon happy, sad;
+	private int nFlags, nTimer;
 	
 	public counter(map mapa) {
 		
@@ -34,15 +35,18 @@ public class counter extends JPanel{
 		
 		Font style=digitalFont(Font.PLAIN, 25);
 		
-		nFlags=new JLabel("000");
-		nFlags.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		nFlags.setFont(style);
-		nFlags.setForeground(Color.RED);
+		flags=new JLabel("000");
+		flags.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		flags.setFont(style);
+		flags.setForeground(Color.RED);
 		
 		timer=new JLabel("000");
 		timer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		timer.setFont(style);
 		timer.setForeground(Color.RED);
+		
+		nFlags=0;
+		nTimer=0;
 		
 		BufferedImage icon=null;
 		
@@ -73,7 +77,7 @@ public class counter extends JPanel{
 		
 		resetPanel.add(reset);
 		
-		add(nFlags, BorderLayout.WEST);
+		add(flags, BorderLayout.WEST);
 		add(resetPanel, BorderLayout.CENTER);
 		add(timer, BorderLayout.EAST);
 	
@@ -103,6 +107,29 @@ public class counter extends JPanel{
 			}
 			
 		});
+		
+	}
+	
+	public void setFlags(int nFlags) {
+		this.nFlags=nFlags;
+		flags.setText(formatTo(nFlags));
+	}
+	
+	public int getFlags() {
+		return nFlags;
+	}
+	
+	private String formatTo(int n) {
+		
+		String s=String.valueOf(n);
+		
+		while(s.length()<3) {
+			
+			s="0" + s;
+			
+		}
+		
+		return s;
 		
 	}
 	

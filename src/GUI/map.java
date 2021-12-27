@@ -99,6 +99,8 @@ public class map extends JPanel{
 	
 	public void setCounter(counter count) {
 		this.count=count;
+		
+		count.setFlags(nMines);
 	}
 		
 	private class box extends JPanel{ //CASILLAS
@@ -138,7 +140,7 @@ public class map extends JPanel{
 				
 				public void mouseEntered(MouseEvent e) {
 					
-					setBackground(Color.GRAY.darker());
+					if(number!=0) setBackground(color.darker());
 					
 				}
 				
@@ -160,12 +162,18 @@ public class map extends JPanel{
 							
 							case NOT_ICON:
 								
-								bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
+								if(count.getFlags()>0) {
 								
-								iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+									bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
+									
+									iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+									
+									icon=FLAG;
+																	
+									count.setFlags(count.getFlags()-1);
+									
+								}
 								
-								icon=FLAG;
-																
 								break;
 								
 							case FLAG:
@@ -175,6 +183,8 @@ public class map extends JPanel{
 								iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
 								
 								icon=DOUBT;
+								
+								count.setFlags(count.getFlags()+1);
 								
 								break;
 								
@@ -193,59 +203,13 @@ public class map extends JPanel{
 						}
 												
 					}else {
+						open();
 						
-						iconLabel.setIcon(null);
-						
-						if(mine) {
-							
-							BufferedImage bufferIcon=null;
-							
-							try {
-								bufferIcon=ImageIO.read(map.class.getResource("Images/mine.png"));
-								iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-												
-							
-						}else {
-															
-							iconLabel.setText("" + number);
-														
-							switch(number) {
-								
-							case 0:
-								color=Color.GRAY.darker();
-								setBackground(color);
-								iconLabel.setForeground(color);
-								break;
-							
-							case 1:
-								iconLabel.setForeground(Color.CYAN.darker());
-								break;
-								
-							case 2:
-								iconLabel.setForeground(Color.GREEN.brighter());
-								break;
-								
-							case 3:
-								iconLabel.setForeground(Color.RED.darker());
-								break;
-								
-							case 4:
-								iconLabel.setForeground(Color.BLUE.darker());
-								break;
-								
-							default:
-								iconLabel.setForeground(Color.WHITE.darker());
-								break;
-								
-							}
-								
+						if(mine) {							
+							setBackground(Color.RED);
+							color=Color.RED;
+							openAll();
 						}
-						
-						icon=OPENED;
-						
 					}
 					
 				}
@@ -254,15 +218,82 @@ public class map extends JPanel{
 			
 		}
 		
+		public void openAll() {
+			
+			for(int y=0; y<dimension; y++) {
+				
+				for(int x=0; x<dimension; x++) {
+					
+					boxes[y][x].open();
+				}
+				
+			}
+			
+		}
+		
+		public void open() {
+
+			iconLabel.setIcon(null);
+			
+			if(mine) {
+				
+				BufferedImage bufferIcon=null;
+				
+				try {
+					bufferIcon=ImageIO.read(map.class.getResource("Images/mine.png"));
+					iconLabel.setIcon(new ImageIcon(bufferIcon.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+								
+				
+			}else {
+												
+				iconLabel.setText("" + number);
+											
+				switch(number) {
+					
+				case 0:
+					color=Color.GRAY.darker();
+					setBackground(color);
+					iconLabel.setForeground(color);
+					break;
+				
+				case 1:
+					iconLabel.setForeground(Color.CYAN.darker());
+					break;
+					
+				case 2:
+					iconLabel.setForeground(Color.GREEN.brighter());
+					break;
+					
+				case 3:
+					iconLabel.setForeground(Color.RED.darker());
+					break;
+					
+				case 4:
+					iconLabel.setForeground(Color.BLUE.darker());
+					break;
+					
+				default:
+					iconLabel.setForeground(Color.WHITE.darker());
+					break;
+					
+				}
+					
+			}
+
+			if(icon==FLAG) count.setFlags(count.getFlags()+1);
+			
+			icon=OPENED;
+			
+		}
+		
 		public void setMine(boolean mine) {
 			this.mine=mine;
 			
 			if(mine) number=-1;					
-			else {
-				
-				//TODO
-				
-			}
+			else number=0;
 						
 		}
 		
