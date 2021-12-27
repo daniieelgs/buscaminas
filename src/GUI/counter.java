@@ -111,7 +111,7 @@ public class counter extends JPanel implements Runnable{
 
 			public void actionPerformed(ActionEvent e) {
 
-				threadAnimation.interrupt();
+				if(threadAnimation!=null) threadAnimation.interrupt();
 				resetTimer();
 				die=false;
 				winner=false;
