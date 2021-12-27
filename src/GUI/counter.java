@@ -289,7 +289,7 @@ public class counter extends JPanel implements Runnable{
 		threadTimer=new Thread(this);
 		
 		threadTimer.start();
-		
+				
 	}
 	
 	public void resetTimer() {
@@ -304,6 +304,12 @@ public class counter extends JPanel implements Runnable{
 	public void stopTimer() {
 		
 		threadTimer.interrupt();
+		
+	}
+	
+	public boolean isCounting() {
+		
+		return threadTimer==null ? false: !threadTimer.getState().equals(Thread.State.TERMINATED);
 		
 	}
 	

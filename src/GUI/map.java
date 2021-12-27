@@ -30,6 +30,7 @@ public class map extends JPanel{
 	
 	private counter count;
 	private int dimension, nMines, maxBoxesOpened, numBoxesOpened;
+	private boolean started;
 	
 	public map(int dimension, int nMines) {
 	
@@ -111,10 +112,12 @@ public class map extends JPanel{
 		this.count=count;
 		
 		count.setFlags(nMines);
-		count.startTimer();
+		
 	}
 	
 	public void reset() {
+		
+		started=false;
 		
 		removeAll();
 		
@@ -122,12 +125,7 @@ public class map extends JPanel{
 		
 		generateMines();
 		
-		if(count!=null) {
-			
-			count.setFlags(nMines);
-			count.startTimer();
-
-		}
+		if(count!=null) count.setFlags(nMines);
 		
 	}
 		
@@ -263,6 +261,11 @@ public class map extends JPanel{
 		
 		private void leftClick() {
 				
+			if(!started) {
+				count.startTimer();
+				started=true;
+			}
+			
 			if(icon!=OPENED) open();
 			
 			if(numBoxesOpened==maxBoxesOpened) {
@@ -305,7 +308,7 @@ public class map extends JPanel{
 		}
 		
 		public void open() {
-
+			
 			iconLabel.setIcon(null);
 
 			if(icon==FLAG && count!=null) count.setFlags(count.getFlags()+1);
