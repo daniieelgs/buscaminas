@@ -1,5 +1,9 @@
 # v1.X
 
+## v1.2 (27/12/2021)
+### Bugs Fixed
+* Imposible resetear la partida si morias. Solucionado
+
 ## v1.1 (27/12/2021)
 ### Bugs Fixed
 * Solucionado el fallo de visualicación del timer al resetear la partida antes de que acabara la marcha atras después de ganar una partida
