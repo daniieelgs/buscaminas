@@ -1,12 +1,14 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class frame extends JFrame{
@@ -20,6 +22,21 @@ public class frame extends JFrame{
 		super(titl);
 		
 		setBounds(width*3/8, height/4, width/4, height/2);
+		
+		Image icon;
+
+		try {
+			
+			icon = new ImageIcon(frame.class.getResource("Images/mine.png")).getImage();
+			
+	        setIconImage(icon);
+
+		} catch (Exception e1) {
+			
+			e1.printStackTrace();
+			
+		}
+
 		
 		setResizable(false);
 		
