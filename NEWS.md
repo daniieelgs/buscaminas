@@ -1,5 +1,10 @@
 # v1.X
 
+## v1.3 (28/12/2021)
+* Nuevo emoji en el boton de reinicio al presionar una casilla
+* El temporizador empezará a contar al abrir la primera casilla
+* Correcciones del código
+
 ## v1.2 (27/12/2021)
 ### Bugs Fixed
 * Imposible resetear la partida si morias. Solucionado
