@@ -43,7 +43,8 @@ public class frame extends JFrame{
 		content=new panel(width/4, height/2);
 		
 		add(content, BorderLayout.CENTER);
-	
+		add(new optionBar(content), BorderLayout.NORTH);
+		
 		addWindowListener(new WindowAdapter() {
 			
 			public void windowOpened(WindowEvent e) {
