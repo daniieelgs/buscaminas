@@ -21,7 +21,7 @@ public class optionBar extends JPanel{
 	private JFrame frame;
 	
 	public optionBar(panel content, JFrame frame) {
-		
+				
 		setLayout(new BorderLayout());
 		
 		this.content=content;

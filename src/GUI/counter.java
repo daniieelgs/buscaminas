@@ -3,7 +3,10 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,68 +36,82 @@ public class counter extends JPanel implements Runnable{
 	final static int HAPPY=0, SAD=1, DIE=3, WIN=4, SORPRES=5;
 	private int type, preType;
 	
-	public counter(map mapa) {
+	public counter(map mapa, int size) {
+		
+		setPreferredSize(new Dimension(0, size));
 		
 		setLayout(new BorderLayout());
 		
 		Font style=digitalFont(Font.PLAIN, 25);
 		
-		flags=new JLabel("000");
+		flags=new JLabel("0 0 0");
 		flags.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		flags.setFont(style);
+		flags.setOpaque(true);
 		flags.setForeground(Color.RED);
+		flags.setBackground(Color.BLACK);
 		
-		timer=new JLabel("000");
+		timer=new JLabel("0 0 0");
 		timer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		timer.setFont(style);
+		timer.setOpaque(true);
 		timer.setForeground(Color.RED);
+		timer.setBackground(Color.BLACK);
 		
 		nFlags=0;
 		nTimer=0;
 		
 		BufferedImage icon=null;
-		
+				
 		try {
 			
 			icon=ImageIO.read(counter.class.getResource("Images/happy.png"));
-			happy=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			happy=new ImageIcon(icon.getScaledInstance(size, size, Image.SCALE_DEFAULT));
 			
 			icon=ImageIO.read(counter.class.getResource("Images/sad.png"));
-			sad=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			sad=new ImageIcon(icon.getScaledInstance(size, size, Image.SCALE_DEFAULT));
 
 			icon=ImageIO.read(counter.class.getResource("Images/died.png"));
-			died=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			died=new ImageIcon(icon.getScaledInstance(size, size, Image.SCALE_DEFAULT));
 			
 			icon=ImageIO.read(counter.class.getResource("Images/win.png"));
-			win=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			win=new ImageIcon(icon.getScaledInstance(size, size, Image.SCALE_DEFAULT));
 			
 			icon=ImageIO.read(counter.class.getResource("Images/sorpres.png"));
-			sorpres=new ImageIcon(icon.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			sorpres=new ImageIcon(icon.getScaledInstance(size, size, Image.SCALE_DEFAULT));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		reset=new JButton();
-		
+	
 		reset.setOpaque(false);
 		reset.setFocusPainted(false);
 		reset.setBorderPainted(false); 
 		reset.setContentAreaFilled(false); 
+		reset.setPreferredSize(new Dimension(size, size));
 		
-		reset.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		reset.setCursor(new Cursor(Cursor.HAND_CURSOR));		
 		
 		setButton(HAPPY);
+				
+		JPanel resetPanel=new JPanel(new GridBagLayout());
+					
+		GridBagConstraints c=new GridBagConstraints();
 		
-		JPanel resetPanel=new JPanel();
+		c.gridx=0;
+		c.gridy=0;
+		c.ipadx=size;
+		c.ipady=size;
+		c.fill=GridBagConstraints.BOTH;
 		
 		resetPanel.add(reset);
-		
+	
 		add(flags, BorderLayout.WEST);
 		add(resetPanel, BorderLayout.CENTER);
 		add(timer, BorderLayout.EAST);
-	
+			
 		reset.addMouseListener(new MouseAdapter() {
 			
 			public void mouseEntered(MouseEvent e) {
@@ -136,6 +153,10 @@ public class counter extends JPanel implements Runnable{
 		
 	}
 	
+	public counter(map mapa) {
+		this(mapa, 30);
+	}
+	
 	public void setButton(int t) {
 		
 		type=t;
@@ -167,9 +188,19 @@ public class counter extends JPanel implements Runnable{
 		
 		String s=String.valueOf(n);
 		
-		while(s.length()<3) {
+		String s2="";
+		
+		for(int i=0; i<s.length(); i++) {
 			
-			s="0" + s;
+			s2+=s.charAt(i) + ((i+1)==s.length() ? "" : " ");
+			
+		}
+		
+		s=s2;
+		
+		while(s.length()<5) {
+			
+			s="0 " + s;
 			
 		}
 		
