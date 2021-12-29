@@ -1,5 +1,11 @@
 # v2.X
 
+## v2.1 (29/12/2021)
+* Modificación de los colores de los números
+* Cambio del aspecto visual en los contadores
+### Bugs Fixed
+* El emoji de muerte no cambiaba al resetear
+
 ## v2.0 (29/12/2021)
 * Selector de niveles con 3 disponibles (Prinicipiante, Intermedio, Experto)
 ### Bugs Fixed
