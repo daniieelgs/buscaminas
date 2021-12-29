@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import java.awt.Component;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class panel extends JPanel{

@@ -31,7 +31,7 @@ public class counter extends JPanel implements Runnable{
 	private int nFlags, nTimer;
 	private Thread threadTimer, threadAnimation;
 	final static int HAPPY=0, SAD=1, DIE=3, WIN=4, SORPRES=5;
-	private int type;
+	private int type, preType;
 	
 	public counter(map mapa) {
 		
@@ -99,14 +99,18 @@ public class counter extends JPanel implements Runnable{
 			
 			public void mouseEntered(MouseEvent e) {
 				
-				if(type!=WIN) setButton(SAD);
+				if(type!=WIN) {
+					
+					preType=type;
+					setButton(SAD);
+				}
 				
 			}
 			
 			public void mouseExited(MouseEvent e) {
 				
 				if(type==DIE) setButton(DIE);
-				else if(type!=WIN) setButton(HAPPY);
+				else if(type!=WIN) setButton(preType);
 				
 			}
 			
