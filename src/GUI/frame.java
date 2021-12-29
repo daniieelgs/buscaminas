@@ -38,7 +38,7 @@ public class frame extends JFrame{
 		}
 
 		
-		setResizable(true);
+		setResizable(false);
 		
 		content=new panel();
 		

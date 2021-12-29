@@ -1,3 +1,10 @@
+# v2.X
+
+## v2.0 (29/12/2021)
+* Selector de niveles con 3 disponibles (Prinicipiante, Intermedio, Experto)
+### Bugs Fixed
+* El emoji de muerte volvia al estado normal al pasar el ratón por encima
+
 # v1.X
 
 ## v1.3 (28/12/2021)
