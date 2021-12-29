@@ -122,13 +122,13 @@ public class counter extends JPanel implements Runnable{
 
 				if(threadAnimation!=null) threadAnimation.interrupt();
 				resetTimer();
-				
-				setButton(HAPPY);
-				
+								
 				nFlags=0;
 				flags.setText("");
 				
 				mapa.reset();
+				
+				preType=type;
 								
 			}
 			

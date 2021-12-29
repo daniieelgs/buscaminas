@@ -114,6 +114,7 @@ public class map extends JPanel{
 		this.count=count;
 		
 		count.setFlags(nMines);
+		count.setButton(counter.HAPPY);
 		
 	}
 	
@@ -127,7 +128,10 @@ public class map extends JPanel{
 		
 		generateMines();
 		
-		if(count!=null) count.setFlags(nMines);
+		if(count!=null) {
+			count.setFlags(nMines);
+			count.setButton(counter.HAPPY);
+		}
 		
 	}
 		
@@ -357,11 +361,11 @@ public class map extends JPanel{
 					break;
 				
 				case 1:
-					iconLabel.setForeground(Color.CYAN.darker());
+					iconLabel.setForeground(Color.blue.brighter());
 					break;
 					
 				case 2:
-					iconLabel.setForeground(Color.GREEN.brighter());
+					iconLabel.setForeground(Color.GREEN.darker().darker());
 					break;
 					
 				case 3:
@@ -369,13 +373,24 @@ public class map extends JPanel{
 					break;
 					
 				case 4:
-					iconLabel.setForeground(Color.BLUE.darker());
+					iconLabel.setForeground(Color.BLUE.darker().darker());
 					break;
 					
-				default:
-					iconLabel.setForeground(Color.WHITE.darker());
+				case 5:
+					iconLabel.setForeground(Color.red.darker().darker());
+					break;
+
+				case 6:
+					iconLabel.setForeground(Color.CYAN.darker());
 					break;
 					
+				case 7:
+					iconLabel.setForeground(Color.BLACK);
+					break;
+				
+				case 8:
+					iconLabel.setForeground(Color.WHITE.brighter());
+					break;
 				}
 					
 			}
