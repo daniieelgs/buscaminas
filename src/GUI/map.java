@@ -24,7 +24,7 @@ public class map extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	static final int[] EASY_MODE= {8, 10};
+	static final int[] EASY_MODE= {8, 10}, MEDIUM_MODE= {16, 40}, EXPERT_MODE= {32, 99};
 	
 	private box[][] boxes;
 	
@@ -49,10 +49,12 @@ public class map extends JPanel{
 				
 	}
 	
-	public map() {
-		
-		this(EASY_MODE[0], EASY_MODE[1]);
-		
+	public map(int[] level) {
+		this(level[0], level[1]);
+	}
+	
+	public map() {		
+		this(EASY_MODE);
 	}
 	
 	public void createBoxes() {
@@ -90,7 +92,7 @@ public class map extends JPanel{
 			
 			boxes[y][x].setMine(true);
 								
-			//System.out.println(x + " - " + y);
+			System.out.println(x + " - " + y);
 			
 			for(int j=x-1; j<x+2; j++) {
 				

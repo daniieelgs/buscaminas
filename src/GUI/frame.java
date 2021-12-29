@@ -38,12 +38,13 @@ public class frame extends JFrame{
 		}
 
 		
-		setResizable(false);
+		setResizable(true);
 		
-		content=new panel(width/4, height/2);
+		content=new panel();
 		
 		add(content, BorderLayout.CENTER);
-	
+		add(new optionBar(content, this), BorderLayout.NORTH);
+		
 		addWindowListener(new WindowAdapter() {
 			
 			public void windowOpened(WindowEvent e) {
