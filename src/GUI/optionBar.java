@@ -71,11 +71,11 @@ public class optionBar extends JPanel{
 			}
 			else if((JRadioButton)e.getSource()==medium) {
 				content.setLevelMap(map.MEDIUM_MODE);
-				frame.setBounds(width/2-(width/4 + (width/4)/4)/2, height/2-(height/2 + (height/2)/4)/2, width/4 + (width/4)/4, height/2 + (height/2)/4);
+				frame.setBounds(width*11/32, height*3/16, width*5/16, height*5/8);
 			}
 			else if((JRadioButton)e.getSource()==expert) {
 				content.setLevelMap(map.EXPERT_MODE);
-				frame.setBounds(width/2-(width/4*2)/2, height/2-((height/2)*2)/2, width/4*2, (height/2)*2);
+				frame.setBounds(width/2-(width/4*2)/2, 0, width/4*2, (height/2)*2);
 			}
 			
 		}
