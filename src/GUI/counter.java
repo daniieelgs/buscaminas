@@ -235,15 +235,15 @@ public class counter extends JPanel implements Runnable{
 					
 				}
 				
-				flags.setText("000");
+				flags.setText(formatTo(0));
 				
-				DELAY=800;
+				DELAY=400;
 				
 				char[] c=flags.getText().toCharArray();
 				
-				char[] c2="WIN".toCharArray();
+				char[] c2="W I N".toCharArray();
 				
-				for(int i=0; i<3; i++) {
+				for(int i=0; i<c2.length; i++) {
 					
 					try {
 						Thread.sleep(DELAY);
@@ -259,7 +259,7 @@ public class counter extends JPanel implements Runnable{
 				
 				c=timer.getText().toCharArray();
 				
-				for(int i=0; i<3; i++) {
+				for(int i=0; i<c2.length; i++) {
 					
 					try {
 						Thread.sleep(DELAY);
