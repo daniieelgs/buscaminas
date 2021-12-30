@@ -19,6 +19,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class map extends JPanel{
 
@@ -27,10 +29,11 @@ public class map extends JPanel{
 	static final int[] EASY_MODE= {8, 10}, MEDIUM_MODE= {16, 40}, EXPERT_MODE= {32, 99};
 	
 	private box[][] boxes;
+	private box[] mines;
 	
 	private counter count;
 	private int dimension, nMines, maxBoxesOpened, numBoxesOpened;
-	private boolean started;
+	private boolean started, playing;
 	
 	public map(int dimension, int nMines) {
 	
@@ -38,6 +41,10 @@ public class map extends JPanel{
 				
 		this.dimension=dimension;
 		this.nMines=nMines;
+		
+		mines=new box[nMines];
+		
+		playing=true;
 		
 		maxBoxesOpened=dimension*dimension-nMines;
 		
@@ -64,9 +71,7 @@ public class map extends JPanel{
 			for(int x=0; x<dimension; x++) {
 				
 				box b=new box(x, y);
-				
-				b.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-								
+												
 				boxes[y][x]=b;
 				
 				add(b);
@@ -91,8 +96,10 @@ public class map extends JPanel{
 			}while(boxes[y][x].isMine());
 			
 			boxes[y][x].setMine(true);
-								
-			//System.out.println(x + " - " + y);
+			
+			mines[i]=boxes[y][x];
+			
+			System.out.println(x + " - " + y);
 			
 			for(int j=x-1; j<x+2; j++) {
 				
@@ -121,6 +128,7 @@ public class map extends JPanel{
 	public void reset() {
 		
 		started=false;
+		playing=true;
 		
 		removeAll();
 		
@@ -167,7 +175,9 @@ public class map extends JPanel{
 			
 			number=0;
 						
-			color=Color.GRAY;
+			color=new Color(189, 189, 189);
+			
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			
 			setBackground(color);
 			
@@ -179,13 +189,13 @@ public class map extends JPanel{
 				
 				public void mouseEntered(MouseEvent e) {
 					
-					if(number!=0 || icon!=OPENED) setBackground(color.darker());
+					if(icon!=OPENED) setBackground(color.darker());
 					
 				}
 				
 				public void mousePressed(MouseEvent e) {
 					
-					if(count!=null) {
+					if(count!=null && playing) {
 						
 						typeButtonCount=count.getButton();
 						count.setButton(counter.SORPRES);
@@ -196,10 +206,16 @@ public class map extends JPanel{
 				
 				public void mouseReleased(MouseEvent e) {
 					
-					if(count!=null) count.setButton(typeButtonCount);
-					
-					if(e.getButton()==MouseEvent.BUTTON3) rightClick();						
-					else leftClick();
+					if(playing) {
+						
+						setBackground(color);
+						
+						if(count!=null) count.setButton(typeButtonCount);
+						
+						if(e.getButton()==MouseEvent.BUTTON3) rightClick();						
+						else leftClick();
+						
+					}
 											
 				}
 				
@@ -282,48 +298,56 @@ public class map extends JPanel{
 					count.win();
 				}
 
-				openAll();
 			}
 			
-			if(mine) {							
-				setBackground(Color.RED);
-				color=Color.RED;
+			if(mine) {
 				
 				if(count!=null) {
 					count.stopTimer();
 					count.setButton(counter.DIE);
 				}
-
-				openAll();
-			}
+							
+				setBackground(Color.RED);
+				color=Color.RED;
+				
+				openMines();
+				
+				playing=false;
+				
+			}else open();
 		
 			
 		}
 		
-		private void openAll() {
+		private void openMines() {
+
+			ExecutorService pool=Executors.newFixedThreadPool(mines.length);
 			
-			for(int y=0; y<dimension; y++) {
+			for(int i=0; i<mines.length; i++) {
 				
-				for(int x=0; x<dimension; x++) {
+				final int box=i;
+				
+				pool.execute(new Runnable() {
 					
-					boxes[y][x].open();
-				}
+					public void run() {
+						mines[box].open();
+					}
+					
+				});
 				
 			}
 			
 		}
 		
 		public void open() {
+					
+			setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			
-			iconLabel.setIcon(null);
-
-			if(icon==FLAG && count!=null) count.setFlags(count.getFlags()+1);
-			
-			icon=OPENED;
-			
-			numBoxesOpened++;
-			
-			if(mine) {
+			if(mine && icon!=OPENED) {
+					
+				icon=OPENED;
+				
+				iconLabel.setIcon(null);
 				
 				BufferedImage bufferIcon=null;
 				
@@ -333,18 +357,23 @@ public class map extends JPanel{
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-								
+			
+			}else if(icon!=OPENED){
+									
+				if(icon==FLAG && count!=null) count.setFlags(count.getFlags()+1);
+						
+				icon=OPENED;
 				
-			}else {
-												
+				numBoxesOpened++;
+				
+				iconLabel.setIcon(null);
+				
 				iconLabel.setText("" + number);
-											
+										
 				switch(number) {
 					
 				case 0:
-					color=Color.GRAY.darker();
-					setBackground(color);
-					iconLabel.setForeground(color);
+					iconLabel.setText("");
 					
 					for(int j=x-1; j<x+2; j++) {
 						
@@ -392,9 +421,9 @@ public class map extends JPanel{
 					iconLabel.setForeground(Color.WHITE.brighter());
 					break;
 				}
-					
+				
 			}
-			
+						
 		}
 		
 		public void setMine(boolean mine) {
