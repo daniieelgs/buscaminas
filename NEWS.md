@@ -1,5 +1,12 @@
 # v2.X
 
+## 2.2 (29/12/2021)
+* Optimización en la explosion de minas
+* Cambio ligero de aspecto en las casillas abiertas
+* Al explotar una mina, solo se abriran las demás casillas que también contenian una mina
+### Bugs Fixed
+* Fallo en la animación del texto 'WIN' en los contadores
+
 ## v2.1 (29/12/2021)
 * Modificación de los colores de los números
 * Cambio del aspecto visual en los contadores
