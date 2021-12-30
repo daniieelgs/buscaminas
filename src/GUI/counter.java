@@ -138,6 +138,8 @@ public class counter extends JPanel implements Runnable{
 			public void actionPerformed(ActionEvent e) {
 
 				if(threadAnimation!=null) threadAnimation.interrupt();
+				
+				stopTimer();
 				resetTimer();
 								
 				nFlags=0;
@@ -330,7 +332,7 @@ public class counter extends JPanel implements Runnable{
 	public void resetTimer() {
 		
 		nTimer=0;
-		timer.setText("000");
+		timer.setText(formatTo(0));
 		
 		updateUI();
 		

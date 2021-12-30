@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,6 +35,7 @@ public class map extends JPanel{
 	private counter count;
 	private int dimension, nMines, maxBoxesOpened, numBoxesOpened;
 	private boolean started, playing;
+	private ArrayList<box> flags;
 	
 	public map(int dimension, int nMines) {
 	
@@ -49,7 +51,9 @@ public class map extends JPanel{
 		maxBoxesOpened=dimension*dimension-nMines;
 		
 		boxes=new box[dimension][dimension];
-						
+		
+		flags=new ArrayList<box>();
+		
 		createBoxes();
 		
 		generateMines();
@@ -129,6 +133,10 @@ public class map extends JPanel{
 		
 		started=false;
 		playing=true;
+		
+		numBoxesOpened=0;
+		
+		flags=new ArrayList<box>();
 		
 		removeAll();
 		
@@ -249,6 +257,8 @@ public class map extends JPanel{
 														
 						count.setFlags(count.getFlags()-1);
 						
+						if(!mine) flags.add(this);
+						
 					}
 					
 					break;
@@ -262,6 +272,8 @@ public class map extends JPanel{
 					icon=DOUBT;
 					
 					if(count!=null) count.setFlags(count.getFlags()+1);
+					
+					if(!mine) flags.remove(this);
 					
 					break;
 					
@@ -284,23 +296,15 @@ public class map extends JPanel{
 		private void leftClick() {
 				
 			if(!started) {
-				count.startTimer();
+				if(count!=null) count.startTimer();
 				started=true;
 			}
 			
 			if(icon!=OPENED) open();
+						
+			if(numBoxesOpened==maxBoxesOpened) win();
 			
-			if(numBoxesOpened==maxBoxesOpened) {
-			
-				if(count!=null) {
-					count.stopTimer();
-					count.setButton(counter.WIN);
-					count.win();
-				}
-
-			}
-			
-			if(mine) {
+			if(mine && icon!=FLAG) {
 				
 				if(count!=null) {
 					count.stopTimer();
@@ -314,38 +318,93 @@ public class map extends JPanel{
 				
 				playing=false;
 				
-			}else open();
+			}
 		
 			
 		}
 		
-		private void openMines() {
-
+		private void win() {
+			
 			ExecutorService pool=Executors.newFixedThreadPool(mines.length);
+			
+			BufferedImage bufferIcon=null;
+			
+			try {
+				bufferIcon=ImageIO.read(map.class.getResource("Images/flag.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			final BufferedImage buffer=bufferIcon;
 			
 			for(int i=0; i<mines.length; i++) {
 				
 				final int box=i;
-				
+								
 				pool.execute(new Runnable() {
 					
 					public void run() {
-						mines[box].open();
+						
+						mines[box].iconLabel.setIcon(new ImageIcon(buffer.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+						
 					}
 					
 				});
 				
 			}
 			
+			pool.shutdown();
+			
+			if(count!=null) {
+				count.stopTimer();
+				count.setButton(counter.WIN);
+				count.win();
+			}
+			
+		}
+		
+		private void openMines() {
+
+			ExecutorService pool=Executors.newFixedThreadPool(mines.length);
+						
+			BufferedImage bufferIcon=null;
+			
+			try {
+				bufferIcon=ImageIO.read(map.class.getResource("Images/notMine.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			final BufferedImage buffer=bufferIcon;
+			
+			for(int i=0; i<mines.length; i++) {
+				
+				final int box=i;
+								
+				pool.execute(new Runnable() {
+					
+					public void run() {
+						mines[box].open();
+						
+						if(flags.size()>box) flags.get(box).iconLabel.setIcon(new ImageIcon(buffer.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT)));
+						
+					}
+					
+				});
+				
+			}
+			
+			pool.shutdown();
+						
 		}
 		
 		public void open() {
-					
-			setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-			
-			if(mine && icon!=OPENED) {
+								
+			if(mine && icon!=FLAG) {
 					
 				icon=OPENED;
+				
+				setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 				
 				iconLabel.setIcon(null);
 				
@@ -358,14 +417,16 @@ public class map extends JPanel{
 					e1.printStackTrace();
 				}
 			
-			}else if(icon!=OPENED){
+			}else if(!mine && icon!=FLAG){
 									
 				if(icon==FLAG && count!=null) count.setFlags(count.getFlags()+1);
 						
 				icon=OPENED;
 				
-				numBoxesOpened++;
+				setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 				
+				numBoxesOpened++;
+								
 				iconLabel.setIcon(null);
 				
 				iconLabel.setText("" + number);

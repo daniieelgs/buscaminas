@@ -1,5 +1,12 @@
 # v2.X
 
+## 2.3 (30/12/2021)
+* No se podrá abrir una casilla que tenga la bandera hasta que se quite
+* Cuando se gane una partida, todas las casillas que eran minas se mostrará la bandera
+* Si añades una bandera en una casilla que no es una mina y luego pierdes la partida, el icono de la bandera será sustituido por una mina con una cruz
+## Bugs Fixed
+* No salia el mensaje de victoria o salia antes de acabar la partida cuando se había reseteado el juego anteriormente
+
 ## 2.2 (30/12/2021)
 * Optimización en la explosion de minas
 * Cambio ligero de aspecto en las casillas abiertas
