@@ -1,6 +1,6 @@
 # v2.X
 
-## 2.2 (29/12/2021)
+## 2.2 (30/12/2021)
 * Optimización en la explosion de minas
 * Cambio ligero de aspecto en las casillas abiertas
 * Al explotar una mina, solo se abriran las demás casillas que también contenian una mina
