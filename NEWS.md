@@ -1,3 +1,9 @@
+# v3.X
+
+## 3.0 (04/01/2022)
+* Nuevas opciones de menu. 'Nuevo Juevo', 'Pausar' y 'Cerrar'
+* Nuevo modo de juego 'Personalizado'
+
 # v2.X
 
 ## 2.3 (30/12/2021)

@@ -129,8 +129,8 @@ public class optionBar extends JPanel{
 			
 			//System.out.println(width + " - " + height);
 			
-			int ratioX=(int)Math.round(( (double) width/4*2)/map.EXPERT_MODE[0]);
-			int ratioY=(int)Math.round(( (double) (height/2)*2)/map.EXPERT_MODE[0]);
+			int ratioX=(((int)Math.round(( (double) width/4*2)/map.EXPERT_MODE[0])) + ((int)Math.round(( (double) width/4)/map.EASY_MODE[0])))/2;
+			int ratioY=(((int)Math.round(( (double) (height/2)*2)/map.EXPERT_MODE[0])) + ((int)Math.round(( (double) height/2)/map.EASY_MODE[0])))/2;
 									
 			if((JRadioButton)e.getSource()==beginner) {
 				content.setLevelMap(map.EASY_MODE);
