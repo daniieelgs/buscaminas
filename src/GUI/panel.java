@@ -64,4 +64,12 @@ public class panel extends JPanel{
 		updateUI();
 				
 	}
+
+	public counter getCount() {
+		return count;
+	}
+
+	public map getMap() {
+		return mapa;
+	}
 }

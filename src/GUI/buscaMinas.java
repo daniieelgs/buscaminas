@@ -11,7 +11,7 @@ public class buscaMinas {
 		int width=Toolkit.getDefaultToolkit().getScreenSize().width;
 		int height=Toolkit.getDefaultToolkit().getScreenSize().height;
 		
-		frame f=new frame("Busca Minas v2.3", width, height);
+		frame f=new frame("Busca Minas v3.0", width, height);
 		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

@@ -35,6 +35,7 @@ public class counter extends JPanel implements Runnable{
 	private Thread threadTimer, threadAnimation;
 	final static int HAPPY=0, SAD=1, DIE=3, WIN=4, SORPRES=5;
 	private int type, preType;
+	private map mapa;
 	
 	public counter(map mapa, int size) {
 		
@@ -43,6 +44,8 @@ public class counter extends JPanel implements Runnable{
 		setLayout(new BorderLayout());
 		
 		Font style=digitalFont(Font.PLAIN, 25);
+		
+		this.mapa=mapa;
 		
 		flags=new JLabel("0 0 0");
 		flags.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -137,15 +140,7 @@ public class counter extends JPanel implements Runnable{
 
 			public void actionPerformed(ActionEvent e) {
 
-				if(threadAnimation!=null) threadAnimation.interrupt();
-				
-				stopTimer();
-				resetTimer();
-								
-				nFlags=0;
-				flags.setText("");
-				
-				mapa.reset();
+				reset();
 				
 				preType=type;
 								
@@ -331,6 +326,8 @@ public class counter extends JPanel implements Runnable{
 	
 	public void resetTimer() {
 		
+		stopTimer();
+		
 		nTimer=0;
 		timer.setText(formatTo(0));
 		
@@ -340,7 +337,7 @@ public class counter extends JPanel implements Runnable{
 	
 	public void stopTimer() {
 		
-		threadTimer.interrupt();
+		if(threadTimer!=null) threadTimer.interrupt();
 		
 	}
 	
@@ -348,6 +345,15 @@ public class counter extends JPanel implements Runnable{
 		
 		return threadTimer==null ? false: !threadTimer.getState().equals(Thread.State.TERMINATED);
 		
+	}
+	
+	public void reset() {
+		resetTimer();
+						
+		nFlags=0;
+		flags.setText("");
+		
+		mapa.reset();
 	}
 	
 	public void run() {
