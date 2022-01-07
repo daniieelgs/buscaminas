@@ -1,5 +1,9 @@
 # v3.X
 
+## 3.1 (07/01/2022)
+### Bugs Fixed
+* No funciona el 'Pausar' al cambiar la dificultad del juego
+
 ## 3.0 (04/01/2022)
 * Nuevas opciones de menu. 'Nuevo Juevo', 'Pausar' y 'Cerrar'
 * Nuevo modo de juego 'Personalizado'
@@ -10,7 +14,7 @@
 * No se podrá abrir una casilla que tenga la bandera hasta que se quite
 * Cuando se gane una partida, todas las casillas que eran minas se mostrará la bandera
 * Si añades una bandera en una casilla que no es una mina y luego pierdes la partida, el icono de la bandera será sustituido por una mina con una cruz
-## Bugs Fixed
+### Bugs Fixed
 * No salia el mensaje de victoria o salia antes de acabar la partida cuando se había reseteado el juego anteriormente
 
 ## 2.2 (30/12/2021)

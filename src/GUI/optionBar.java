@@ -100,7 +100,7 @@ public class optionBar extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				
 				count.reset();
-				
+								
 			}
 		});
 		
@@ -158,6 +158,8 @@ public class optionBar extends JPanel{
 				frame.setBounds(xLevel, yLevel, widthLevel, heightLevel);
 								
 			}
+			
+			count=content.getCount();
 			
 		}
 		
@@ -261,16 +263,16 @@ public class optionBar extends JPanel{
 		
 		public void actionPerformed(ActionEvent e) {
 			
+			
 			if(count.isCounting() || stop) {
 				
 				stop=!stop;
-				
+							
 				if(stop) {
 					
 					count.stopTimer();
 					
 					stopFrame();
-					
 				}else {
 					
 					stopDialog.dispose();

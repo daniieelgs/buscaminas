@@ -119,6 +119,8 @@ public class map extends JPanel{
 			
 		}
 		
+		System.out.println("\n");
+		
 	}
 	
 	public void setCounter(counter count) {

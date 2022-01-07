@@ -342,7 +342,7 @@ public class counter extends JPanel implements Runnable{
 	}
 	
 	public boolean isCounting() {
-		
+
 		return threadTimer==null ? false: !threadTimer.getState().equals(Thread.State.TERMINATED);
 		
 	}
